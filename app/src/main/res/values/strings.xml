@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Controller</string>
+    <string name="welcome_text">Hello, Admin!</string>
+    <string name="lets_do">Let`s start!</string>
+    <string name="dev_but">Devices</string>
+    <string name="set_but">Settings</string>
+    <string name="prof_but">Profile</string>
+    <string name="con_con">Conn. Periph.</string>
+    <string name="trig_tag">Triggers</string>
+    <string name="contr_tag">Controllers</string>
+
+    <string-array name="device">
+        <item>Moisturising</item>
+        <item>Security</item>
+        <item>Moisturising</item>
+        <item>Security</item>>
+    </string-array>
+
+    <string-array name="trigger_names">
+        <item>Water level</item>
+        <item>Laser</item>
+        <item>Vologa</item>
+        <item>Gates</item>
+
+    </string-array>
+
+    <string-array name="devices1">
+        <item>Moisturising</item>
+        <item>Security</item>
+    </string-array>
+
+    <string-array name="devices_ids">
+        <item>a12b0</item>
+        <item>n06kz</item>
+    </string-array>
+
+    <string-array name="control_names">
+        <item>Pump</item>
+        <item>Signal</item>
+        <item>Penis</item>
+        <item>Popa</item>
+    </string-array>
+
+    <string-array name="control_ids">
+        <item>aaaa</item>
+        <item>zzzz</item>
+        <item>bbbb</item>
+        <item>ssss</item>
+    </string-array>
+
+    <string-array name="trig_ids">
+        <item>1111</item>
+        <item>2222</item>
+        <item>3333</item>
+        <item>4444</item>
+    </string-array>
+
+
+</resources>
