@@ -3,14 +3,12 @@ package com.pany.controller.presentation.viewmodel.trigger;
 public class TriggerModel {
     String trigName;
     String trigId;
-    String aimContr;
-    int trigVal;
-    int curVal;
+    Float trigVal;
+    Float curVal;
 
-    public TriggerModel(String trigName, String trigId, String aimContr, int trigVal, int curVal) {
+    public TriggerModel(String trigName, String trigId, Float trigVal, Float curVal) {
         this.trigName = trigName;
         this.trigId = trigId;
-        this.aimContr = aimContr;
         this.trigVal = trigVal;
         this.curVal = curVal;
     }
@@ -23,15 +21,12 @@ public class TriggerModel {
         return trigId;
     }
 
-    public String getAimContr() {
-        return aimContr;
-    }
 
-    public int getTrigVal() {
+    public Float getTrigVal() {
         return trigVal;
     }
 
-    public int getCurVal() {
+    public Float getCurVal() {
         return curVal;
     }
 }

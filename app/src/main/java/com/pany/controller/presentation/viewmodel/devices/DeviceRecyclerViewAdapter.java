@@ -35,9 +35,17 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
 
     @Override
     public void onBindViewHolder(@NonNull DeviceRecyclerViewAdapter.MyViewHolder holder, int position) {
+        DeviceModel device = deviceModels.get(position);
         holder.devName.setText(deviceModels.get(position).getDeviceName());
         holder.devId.setText(deviceModels.get(position).getDeviceId());
         holder.conPeriph.setText(String.valueOf(deviceModels.get(position).getConnectPeriph()));
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PeripheralActivity.class);
+            intent.putExtra("device_id", device.getDeviceId());
+            intent.putExtra("device_name", device.getDeviceName());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -53,13 +61,6 @@ public class DeviceRecyclerViewAdapter extends RecyclerView.Adapter<DeviceRecycl
             devName = itemView.findViewById(R.id.dev_name);
             devId = itemView.findViewById(R.id.val_id);
             conPeriph = itemView.findViewById(R.id.con_val);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), PeripheralActivity.class);
-                    v.getContext().startActivity(intent);
-                }
-            });
         }
     }
 }
