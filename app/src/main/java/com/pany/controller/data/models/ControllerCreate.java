@@ -12,10 +12,15 @@ public class ControllerCreate {
     @SerializedName("trigger_value")
     private Integer triggerValue;
 
-    public ControllerCreate(String name, String deviceId, Integer triggerValue) {
+    @SerializedName("pin")
+    private Integer pin;
+
+
+    public ControllerCreate(String name, String deviceId, Integer triggerValue, Integer pin) {
         this.name = name;
         this.deviceId = deviceId;
         this.triggerValue = triggerValue;
+        this.pin = pin;
     }
 
     public String getName() {
@@ -30,4 +35,7 @@ public class ControllerCreate {
         return triggerValue;
     }
 
+    public Integer getPin() {
+        return pin;
+    }
 }

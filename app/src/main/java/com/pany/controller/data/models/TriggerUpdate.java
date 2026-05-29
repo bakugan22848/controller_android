@@ -12,25 +12,24 @@ public class TriggerUpdate {
     @SerializedName("notif_value")
     private Float notifValue;
 
-    @SerializedName("check_clock")
-    private Integer checkClock;
+    @SerializedName("type")
+    private String type;
 
-    @SerializedName("write_clock")
-    private Integer writeClock;
+    @SerializedName("pin")
+    private Integer pin;
 
-    public TriggerUpdate(String name, Boolean notifState, Integer checkClock, Float notifValue, Integer writeClock) {
+    public TriggerUpdate(String name, Boolean notifState, Float notifValue, String type, Integer pin) {
         this.name = name;
         this.notifState = notifState;
-        this.checkClock = checkClock;
         this.notifValue = notifValue;
-        this.writeClock = writeClock;
+        this.type = type;
+        this.pin = pin;
     }
+
 
     public String getName() {
         return name;
     }
-
-
 
     public Boolean getNotifState() {
         return notifState;
@@ -40,13 +39,12 @@ public class TriggerUpdate {
         return notifValue;
     }
 
-    public Integer getCheckClock() {
-        return checkClock;
+    public String getType() {
+        return type;
     }
 
-    public Integer getWriteClock() {
-        return writeClock;
+    public Integer getPin() {
+        return pin;
     }
 
-    // Constructor and getters...
 }

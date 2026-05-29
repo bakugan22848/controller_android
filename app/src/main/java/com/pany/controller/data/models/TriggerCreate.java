@@ -15,30 +15,21 @@ public class TriggerCreate {
     @SerializedName("notif_value")
     private Float notifValue;
 
-    @SerializedName("check_clock")
-    private Integer checkClock;
+    @SerializedName("type")
+    private String type;
 
-    @SerializedName("write_clock")
-    private Integer writeClock;
+    @SerializedName("pin")
+    private Integer pin;
 
     public TriggerCreate(String name, String deviceId, Boolean notifState, Float notifValue,
-                                Integer checkClock, Integer writeClock) {
+                                String type, Integer pin) {
         this.name = name;
         this.deviceId = deviceId;
         this.notifState = notifState;
         this.notifValue = notifValue;
-        this.checkClock = checkClock;
-        this.writeClock = writeClock;
+        this.type = type;
+        this.pin = pin;
     }
-
-    public Integer getWriteClock() {
-        return writeClock;
-    }
-
-    public Integer getCheckClock() {
-        return checkClock;
-    }
-
     public Float getNotifValue() {
         return notifValue;
     }
@@ -55,5 +46,11 @@ public class TriggerCreate {
         return name;
     }
 
-    // Getters...
+    public String getType() {
+        return type;
+    }
+
+    public Integer getPin() {
+        return pin;
+    }
 }

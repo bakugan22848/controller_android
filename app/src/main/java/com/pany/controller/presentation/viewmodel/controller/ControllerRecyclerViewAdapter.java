@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,27 +64,51 @@ public class ControllerRecyclerViewAdapter extends RecyclerView.Adapter<Controll
         holder.contrId.setText(model.getContrId());
         holder.trigVal.setText(String.valueOf(model.getTrigVal()));
 
+        if (model.getTriggerId() == null){
+            holder.isAutomatic.setVisibility(View.GONE);
+            holder.state.setEnabled(true);
+        } else {
+            holder.isAutomatic.setVisibility(View.VISIBLE);
+
+            holder.isAutomatic.setOnCheckedChangeListener(null);
+            boolean isAuto = model.getAutomatic() != null ? model.getAutomatic() : false;
+            holder.isAutomatic.setChecked(isAuto);
+            holder.state.setEnabled(!isAuto);
+
+            holder.isAutomatic.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                controllerRepository.updateAutomatic(model.getContrId(), isChecked,
+                        data -> {
+                            model.setAutomatic(isChecked);
+                            holder.state.setEnabled(!isChecked); // блокуємо/розблоковуємо Switch
+
+                            // --- НОВА ЛОГІКА: Якщо увімкнули автомат, скидаємо Switch ---
+                            if (isChecked) {
+                                // Тимчасово знімаємо слухач зі Switch, щоб він не відправив зайвий PUT/PATCH запит на сервер
+                                holder.state.setOnCheckedChangeListener(null);
+
+                                holder.state.setChecked(false); // вимикаємо візуально
+                                model.setState(false);          // оновлюємо в локальній моделі
+
+                                // Повертаємо слухач Switch назад, щоб він працював, якщо автомат знову вимкнуть
+                                restoreSwitchListener(holder, model, position);
+                            }
+                        },
+                        error -> {
+                            // Відкат назад у разі помилки
+                            holder.isAutomatic.setOnCheckedChangeListener(null);
+                            holder.isAutomatic.setChecked(!isChecked);
+                            Toast.makeText(context, "Помилка: " + error, Toast.LENGTH_SHORT).show();
+
+                            // Переініціалізуємо слухач після відкату
+                            notifyItemChanged(position);
+                        }
+                );
+            });
+        }
+
         holder.state.setOnCheckedChangeListener(null);
         holder.state.setChecked(model.isState() != null ? model.isState() : false);
-
-        holder.state.setOnCheckedChangeListener((buttonView, isChecked) ->
-                controllerRepository.updateState(model.getContrId(), isChecked,
-                        data -> model.setState(isChecked),
-                        error -> {
-                            // Повертаємо Switch назад
-                            holder.state.setOnCheckedChangeListener(null);
-                            holder.state.setChecked(!isChecked);
-                            model.setState(!isChecked);
-                            holder.state.setOnCheckedChangeListener((b, newChecked) ->
-                                    controllerRepository.updateState(model.getContrId(), newChecked,
-                                            d -> model.setState(newChecked),
-                                            e -> Toast.makeText(context, e, Toast.LENGTH_SHORT).show()
-                                    )
-                            );
-                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
-                        }
-                )
-        );
+        restoreSwitchListener(holder, model, position);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -101,13 +127,30 @@ public class ControllerRecyclerViewAdapter extends RecyclerView.Adapter<Controll
         TextView contrName, contrId, trigVal;
         Switch state;
 
+        CheckBox isAutomatic;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             contrName = itemView.findViewById(R.id.contr_name);
-            contrId = itemView.findViewById(R.id.aim_t_tag);
-            trigVal = itemView.findViewById(R.id.aim_trig);
+            contrId = itemView.findViewById(R.id.aim_trig);
+            trigVal = itemView.findViewById(R.id.trig_val);
             state = itemView.findViewById(R.id.switch1);
+            isAutomatic = itemView.findViewById(R.id.is_automatic);
 
         }
+    }
+    private void restoreSwitchListener(MyViewHolder holder, ControllerModel model, int position) {
+        holder.state.setOnCheckedChangeListener((buttonView, isChecked) ->
+                controllerRepository.updateState(model.getContrId(), isChecked,
+                        data -> model.setState(isChecked),
+                        error -> {
+                            holder.state.setOnCheckedChangeListener(null);
+                            holder.state.setChecked(!isChecked);
+                            model.setState(!isChecked);
+                            notifyItemChanged(position);
+                            Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
+                        }
+                )
+        );
     }
 }

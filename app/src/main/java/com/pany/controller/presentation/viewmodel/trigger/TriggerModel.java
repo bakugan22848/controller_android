@@ -5,13 +5,18 @@ public class TriggerModel {
     String trigId;
     Float trigVal;
     Float curVal;
+    String type;
+    Integer pin;
 
-    public TriggerModel(String trigName, String trigId, Float trigVal, Float curVal) {
+    public TriggerModel(String trigName, String trigId, Float curVal, Float trigVal, String type,Integer pin) {
         this.trigName = trigName;
-        this.trigId = trigId;
-        this.trigVal = trigVal;
+        this.pin = pin;
+        this.type = type;
         this.curVal = curVal;
+        this.trigVal = trigVal;
+        this.trigId = trigId;
     }
+
 
     public String getTrigName() {
         return trigName;
@@ -28,5 +33,13 @@ public class TriggerModel {
 
     public Float getCurVal() {
         return curVal;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public Integer getPin() {
+        return pin;
     }
 }

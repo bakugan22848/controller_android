@@ -24,11 +24,11 @@ public class Trigger {
     @SerializedName("notif_value")
     private Float notifValue;
 
-    @SerializedName("check_clock")
-    private Integer checkClock;
+    @SerializedName("type")
+    private String type;
 
-    @SerializedName("write_clock")
-    private Integer writeClock;
+    @SerializedName("pin")
+    private Integer pin;
 
     @SerializedName("created_at")
     private String createdAt;
@@ -56,15 +56,12 @@ public class Trigger {
     public Float getNotifValue() { return notifValue; }
     public void setNotifValue(Float notifValue) { this.notifValue = notifValue; }
 
-    public Integer getCheckClock() { return checkClock; }
-    public void setCheckClock(Integer checkClock) { this.checkClock = checkClock; }
 
-    public Integer getWriteClock() { return writeClock; }
-    public void setWriteClock(Integer writeClock) { this.writeClock = writeClock; }
+    public String getType() {
+        return type;
+    }
 
-    public String getCreatedAt() { return createdAt; }
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
-
-    public String getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(String updatedAt) { this.updatedAt = updatedAt; }
+    public Integer getPin() {
+        return pin;
+    }
 }

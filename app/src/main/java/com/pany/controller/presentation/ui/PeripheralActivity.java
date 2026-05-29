@@ -1,6 +1,7 @@
 package com.pany.controller.presentation.ui;
 
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -119,7 +120,9 @@ public class PeripheralActivity extends AppCompatActivity {
                         triggersModels.add(new TriggerModel(
                                 t.getName(), t.getId(),
                                 t.getNotifValue(),
-                                t.getLastValue()
+                                t.getLastValue(),
+                                t.getType(),
+                                t.getPin()
                         ));
                     }
                     tAdapter.notifyDataSetChanged();
@@ -136,7 +139,7 @@ public class PeripheralActivity extends AppCompatActivity {
                         controllersModels.add(new ControllerModel(
                                 c.getName(), c.getId(), c.getTriggerId(),
                                 c.getTriggerValue(), c.getLastState(),
-                                c.getTriggerVector(), c.getAutomatic()
+                                c.getTriggerVector(), c.getAutomatic(), c.getPin()
                         ));
                     }
                     cAdapter.notifyDataSetChanged();
@@ -243,24 +246,23 @@ public class PeripheralActivity extends AppCompatActivity {
         notifValueInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
         layout.addView(notifValueInput);
 
-        EditText checkClockInput = new EditText(this);
-        checkClockInput.setHint("Check clock (seconds)");
-        checkClockInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-        layout.addView(checkClockInput);
+        EditText typeInput = new EditText(this);
+        typeInput.setHint("Type");
+        layout.addView(typeInput);
 
-        EditText writeClockInput = new EditText(this);
-        writeClockInput.setHint("Write clock (seconds)");
-        writeClockInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-        layout.addView(writeClockInput);
+        EditText pinInput = new EditText(this);
+        pinInput.setHint("Pin");
+        pinInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        layout.addView(pinInput);
 
         builder.setView(layout);
         builder.setPositiveButton("Add", (dialog, which) -> {
             String name = nameInput.getText().toString().trim();
             String notifValue = notifValueInput.getText().toString().trim();
-            String checkClock = checkClockInput.getText().toString().trim();
-            String writeClock = writeClockInput.getText().toString().trim();
+            String type = typeInput.getText().toString().trim();
+            String pin = pinInput.getText().toString().trim();
 
-            if (name.isEmpty() || notifValue.isEmpty() || checkClock.isEmpty() || writeClock.isEmpty()) {
+            if (name.isEmpty() || notifValue.isEmpty() || type.isEmpty() || pin.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -268,8 +270,8 @@ public class PeripheralActivity extends AppCompatActivity {
             TriggerCreate body = new TriggerCreate(
                     name, deviceId, null,
                     Float.parseFloat(notifValue),
-                    Integer.parseInt(checkClock),
-                    Integer.parseInt(writeClock)
+                    type,
+                    Integer.parseInt(pin)
             );
 
             triggerRepository.create(body,
@@ -302,11 +304,17 @@ public class PeripheralActivity extends AppCompatActivity {
         triggerValueInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
         layout.addView(triggerValueInput);
 
+        EditText pinInput = new EditText(this);
+        pinInput.setHint("Pin");
+        pinInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        layout.addView(pinInput);
+
         builder.setView(layout);
 
         builder.setPositiveButton("Add", (dialog, which) -> {
             String name = nameInput.getText().toString().trim();
             String triggerValue = triggerValueInput.getText().toString().trim();
+            String pin = pinInput.getText().toString().trim();
 
             if (name.isEmpty() || triggerValue.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -314,7 +322,7 @@ public class PeripheralActivity extends AppCompatActivity {
             }
 
             ControllerCreate body = new ControllerCreate(
-                    name, deviceId, Integer.parseInt(triggerValue)
+                    name, deviceId, Integer.parseInt(triggerValue), Integer.parseInt(pin)
             );
 
             controllerRepository.create(body,
@@ -349,23 +357,24 @@ public class PeripheralActivity extends AppCompatActivity {
         notifValInput.setText(model.getTrigVal() != null ? String.valueOf(model.getTrigVal()) : "");
         layout.addView(notifValInput);
 
-        EditText checkClockInput = new EditText(this);
-        checkClockInput.setHint("Check clock");
-        checkClockInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-        layout.addView(checkClockInput);
+        EditText typeInput = new EditText(this);
+        typeInput.setHint("Type");
+        typeInput.setText(model.getType() != null ? String.valueOf(model.getType()) : "");
+        layout.addView(typeInput);
 
-        EditText writeClockInput = new EditText(this);
-        writeClockInput.setHint("Write clock");
-        writeClockInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
-        layout.addView(writeClockInput);
+        EditText pinInput = new EditText(this);
+        pinInput.setHint("Pin");
+        pinInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        pinInput.setText(model.getPin() != null ? String.valueOf(model.getPin()) : "");
+        layout.addView(pinInput);
 
         builder.setView(layout);
 
         builder.setPositiveButton("Update", (dialog, which) -> {
             String name = nameInput.getText().toString().trim();
             String notifVal = notifValInput.getText().toString().trim();
-            String checkClock = checkClockInput.getText().toString().trim();
-            String writeClock = writeClockInput.getText().toString().trim();
+            String type = typeInput.getText().toString().trim();
+            String pin = pinInput.getText().toString().trim();
 
             if (name.isEmpty()) {
                 Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
@@ -374,9 +383,9 @@ public class PeripheralActivity extends AppCompatActivity {
 
             TriggerUpdate body = new TriggerUpdate(
                     name, null,
-                    checkClock.isEmpty() ? null : Integer.parseInt(checkClock),
                     notifVal.isEmpty() ? null : Float.parseFloat(notifVal),
-                    writeClock.isEmpty() ? null : Integer.parseInt(writeClock)
+                    type.isEmpty() ? null : type,
+                    pin.isEmpty() ? null : Integer.parseInt(pin)
             );
 
             triggerRepository.update(model.getTrigId(), body,
@@ -429,11 +438,30 @@ public class PeripheralActivity extends AppCompatActivity {
         trigValInput.setText(model.getTrigVal() != null ? String.valueOf(model.getTrigVal()) : "");
         layout.addView(trigValInput);
 
+        EditText trigVectInput = new EditText(this);
+        trigVectInput.setHint("< or > trigVal");
+        trigVectInput.setText(model.getTriggerVector() != null ? model.getTriggerVector() : "");
+        layout.addView(trigVectInput);
+
+        EditText trigIdInput = new EditText(this);
+        trigIdInput.setHint("Which trigger");
+        trigIdInput.setText(model.getTriggerId() != null ? model.getTriggerId() : "");
+        layout.addView(trigIdInput);
+
+        EditText pinInput = new EditText(this);
+        pinInput.setHint("Pin");
+        pinInput.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        pinInput.setText(model.getPin() != null ? String.valueOf(model.getPin()) : "");
+        layout.addView(pinInput);
+
         builder.setView(layout);
 
         builder.setPositiveButton("Update", (dialog, which) -> {
             String name = nameInput.getText().toString().trim();
             String trigVal = trigValInput.getText().toString().trim();
+            String triggerVector = trigVectInput.getText().toString().trim();
+            String triggerId = trigIdInput.getText().toString().trim();
+            String pin = pinInput.getText().toString().trim();
 
             if (name.isEmpty()) {
                 Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show();
@@ -441,9 +469,13 @@ public class PeripheralActivity extends AppCompatActivity {
             }
 
             ControllerUpdate body = new ControllerUpdate(
-                    model.isState(),
+                    name,
+                    triggerId,
+                    triggerVector,
                     trigVal.isEmpty() ? null : Integer.parseInt(trigVal),
-                    name
+                    model.isState(),
+                    model.getAutomatic(),
+                    pin.isEmpty() ? null: Integer.parseInt(pin)
 
             );
 

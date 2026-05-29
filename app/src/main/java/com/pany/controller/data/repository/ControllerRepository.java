@@ -89,15 +89,15 @@ public class ControllerRepository {
         });
     }
 
-    public void updateState(String id, Boolean isAutomatic, OnSuccess<Controller> onSuccess, OnError onError) {
+    public void updateState(String id, Boolean lastState, OnSuccess<Controller> onSuccess, OnError onError) {
         ControllerUpdate body = new ControllerUpdate(null, null, null,
-                null, null, isAutomatic);
+                null, lastState, null, null);
         update(id, body, onSuccess, onError);
     }
 
-    public void updateAutomatic(String id, Boolean lastState, OnSuccess<Controller> onSuccess, OnError onError) {
+    public void updateAutomatic(String id, Boolean isAutomatic, OnSuccess<Controller> onSuccess, OnError onError) {
         ControllerUpdate body = new ControllerUpdate(null, null, null,
-                null, lastState, null);
+                null, null, isAutomatic, null);
         update(id, body, onSuccess, onError);
     }
 

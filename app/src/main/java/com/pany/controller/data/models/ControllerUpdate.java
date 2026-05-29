@@ -21,14 +21,18 @@ public class ControllerUpdate{
     @SerializedName("is_automatic")
     private Boolean isAutomatic;
 
+    @SerializedName("pin")
+    private Integer pin;
 
-    public ControllerUpdate(String name, String triggerId, String triggerVector, Integer triggerValue, Boolean lastState, Boolean isAutomatic) {
+
+    public ControllerUpdate(String name, String triggerId, String triggerVector, Integer triggerValue, Boolean lastState, Boolean isAutomatic, Integer pin) {
         this.name = name;
         this.triggerId = triggerId;
         this.triggerVector = triggerVector;
         this.triggerValue = triggerValue;
         this.lastState = lastState;
         this.isAutomatic = isAutomatic;
+        this.pin = pin;
     }
 
     public String getName() {
@@ -47,11 +51,15 @@ public class ControllerUpdate{
         return triggerId;
     }
 
-    public String getTrigger_vector() {
-        return trigger_vector;
+    public String getTriggerVector() {
+        return triggerVector;
     }
 
     public Boolean getAutomatic() {
         return isAutomatic;
+    }
+
+    public Integer getPin() {
+        return pin;
     }
 }

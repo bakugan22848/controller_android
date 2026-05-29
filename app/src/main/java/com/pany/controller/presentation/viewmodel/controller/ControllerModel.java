@@ -8,9 +8,10 @@ public class ControllerModel {
     Boolean state;
     String triggerVector;
     Boolean isAutomatic;
+    Integer pin;
 
 
-    public ControllerModel(String contrName, String contrId, String triggerId, Integer trigVal, Boolean state, String triggerVector, Boolean isAutomatic) {
+    public ControllerModel(String contrName, String contrId, String triggerId, Integer trigVal, Boolean state, String triggerVector, Boolean isAutomatic, Integer pin) {
         this.contrName = contrName;
         this.contrId = contrId;
         this.triggerId = triggerId;
@@ -18,6 +19,7 @@ public class ControllerModel {
         this.state = state;
         this.triggerVector = triggerVector;
         this.isAutomatic = isAutomatic;
+        this.pin = pin;
     }
 
     public void setState(boolean state) {
@@ -46,4 +48,6 @@ public class ControllerModel {
     public String getTriggerVector() {return triggerVector;}
 
     public String getTriggerId() {return triggerId;}
+
+    public Integer getPin() {return pin;}
 }

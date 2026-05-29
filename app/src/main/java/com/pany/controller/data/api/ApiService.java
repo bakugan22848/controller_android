@@ -26,6 +26,12 @@ public interface ApiService {
             @Body DeviceCreate request
     );
 
+    @POST("/device/{device_id}/build")
+    Call<Device> buildFirmware(
+            @Header("Authorization") String token,
+            @Path("id") String deviceId
+    );
+
     @PUT("device/{id}")
     Call<Device> updateDevice(
             @Header("Authorization") String token,
@@ -64,7 +70,6 @@ public interface ApiService {
             @Path("id") String triggerId
     );
 
-    // Controllers (аналогічно)
     @GET("controller/")
     Call<List<Controller>> getControllersByDevice(
             @Header("Authorization") String token,

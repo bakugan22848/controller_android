@@ -51,6 +51,12 @@ public class DeviceRepository {
         });
     }
 
+    /*public void firmware(String id, OnSuccess<Device> onSuccess, OnError onError){
+        apiService.buildFirmware(token(), id){
+
+        }
+    }*/
+
     public void delete(String id, OnSuccess<Device> onSuccess, OnError onError) {
         apiService.deleteDevice(token(), id).enqueue(new Callback<Device>() {
             @Override
